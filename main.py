@@ -1,13 +1,18 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Request, Form
+from fastapi.templating import Jinja2Templates
 from checker import password_analyzer
-from pydantic import BaseModel
-app = FastAPI()
-class PasswordRequest(BaseModel):
-    password: str
-@app.get("/")
-def root():
-    return {"message": "Password Checker API is running"}
 
-@app.post("/analyze")
-def analyze(data: PasswordRequest):
-    return password_analyzer(data.password)
+app = FastAPI()
+templates = Jinja2Templates(directory="templates")
+
+@app.get("/")
+def home(request: Request):
+    return templates.TemplateResponse("index.html", {"request": request})
+
+@app.post("/analyze-form")
+def analyze_form(request: Request, password: str = Form(...)):
+    result = password_analyzer(password)
+    return templates.TemplateResponse("index.html", {
+        "request": request,
+        "result": result
+    })

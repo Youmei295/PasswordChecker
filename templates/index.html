@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Password Checker</title>
+</head>
+<body>
+    <h1>Password Checker</h1>
+
+    <form action="/analyze-form" method="post">
+        <input type="text" name="password" placeholder="Enter password">
+        <button type="submit">Analyze</button>
+    </form>
+
+    {% if result %}
+        <h3>Result:</h3>
+        <p>{{ result }}</p>
+    {% endif %}
+</body>
+</html>
