@@ -1,7 +1,28 @@
 import math as m
+
+_BLACKLIST_SET = None
+
+def _load_blacklist(filepath="blacklist.txt"):
+    """Internal helper to load the 100k passwords into a high-speed set."""
+    global _BLACKLIST_SET
+    try:
+        with open(filepath, 'r', encoding='utf-8') as f:
+            # We use a set for O(1) lookup speed
+            _BLACKLIST_SET = {line.strip().lower() for line in f}
+    except FileNotFoundError:
+        print(f"Warning: {filepath} not found. Blacklist check skipped.")
+        _BLACKLIST_SET = set()
+
 def entropyCalculator(password: str) -> float:
     if not password:
         return 0
+    
+    global _BLACKLIST_SET
+    if _BLACKLIST_SET is None:
+        _load_blacklist()
+        
+    if password.lower() in _BLACKLIST_SET:
+        return 0.0
     
     char_set=0
 
