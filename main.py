@@ -7,12 +7,17 @@ templates = Jinja2Templates(directory="templates")
 
 @app.get("/")
 def home(request: Request):
-    return templates.TemplateResponse("index.html", {"request": request})
+    # Pass the dictionary as the second argument
+    return templates.TemplateResponse(
+        request=request, 
+        name="index.html", 
+        context={"result": None}
+    )
 
 @app.post("/analyze-form")
 def analyze_form(request: Request, password: str = Form(...)):
     result = password_analyzer(password)
-    return templates.TemplateResponse("index.html", {
-        "request": request,
-        "result": result
-    })
+    return templates.TemplateResponse(
+        request=request, 
+        name="index.html", 
+        context={"result": result})

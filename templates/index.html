@@ -7,13 +7,16 @@
     <h1>Password Checker</h1>
 
     <form action="/analyze-form" method="post">
-        <input type="text" name="password" placeholder="Enter password">
+        <input type="text" name="password" placeholder="Enter password" required>
         <button type="submit">Analyze</button>
     </form>
 
     {% if result %}
-        <h3>Result:</h3>
-        <p>{{ result }}</p>
+        <h3>Analysis Result:</h3>
+        <ul>
+            <li><strong>Entropy:</strong> {{ result.entropy | round(2) }}</li>
+            <li><strong>Strength:</strong> {{ result.score }}</li>
+        </ul>
     {% endif %}
 </body>
 </html>
