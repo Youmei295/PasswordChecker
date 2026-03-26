@@ -20,9 +20,10 @@ def entropyCalculator(password: str) -> float:
     global _BLACKLIST_SET
     if _BLACKLIST_SET is None:
         _load_blacklist()
-        
+    
     if password.lower() in _BLACKLIST_SET:
-        return 0.0
+        _BLACKLISTED=False
+        return -1.0
     
     char_set=0
 
@@ -54,6 +55,8 @@ def entropyCalculator(password: str) -> float:
     return m.log2(char_set)*len(password)
 
 def classify_entropy(entropy) -> str:
+    if entropy==-1.0:
+        return "your password is a common password"
     if entropy < 28:
         return "very weak"
     elif entropy < 36:
