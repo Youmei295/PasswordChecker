@@ -3,3 +3,4 @@ uvicorn
 pydantic
 Jinja2
 python-multipart
+nicegui
