@@ -10,7 +10,7 @@ app = FastAPI()
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # for now (later restrict)
+    allow_origins=["https://password-checker-frontend-gweqdkf7e7gfbvde.eastasia-01.azurewebsites.net/"],  # for now (later restrict)
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
