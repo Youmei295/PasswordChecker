@@ -1,6 +1,7 @@
 #qwerty
 from nicegui import ui
 import requests
+import os
 
 API_URL = "https://password-checker-api-h4hqbgf8bjbkd3dg.eastasia-01.azurewebsites.net/analyze"  
 
@@ -44,4 +45,9 @@ def home():
             ui.button("Analyze", on_click=analyze_click) \
                 .classes("w-full mt-2 bg-blue-500 text-white rounded-lg")
 
-ui.run()
+
+
+ui.run(
+    host="0.0.0.0",
+    port=int(os.environ.get("PORT", 8080))
+)
