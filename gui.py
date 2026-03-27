@@ -2,7 +2,7 @@
 from nicegui import ui
 import requests
 
-API_URL = "http://127.0.0.1:8000/analyze"  # local API
+API_URL = "https://password-checker-api-h4hqbgf8bjbkd3dg.eastasia-01.azurewebsites.net/analyze"  
 
 @ui.page("/")
 def home():
