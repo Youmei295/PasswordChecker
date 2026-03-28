@@ -5,4 +5,4 @@ Jinja2
 python-multipart
 nicegui
 requests
-pyodbc
+pymssql

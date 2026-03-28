@@ -5,24 +5,15 @@ from checker import password_analyzer
 from fastapi.middleware.cors import CORSMiddleware
 from contextlib import asynccontextmanager
 import os
-import pyodbc
+import pymssql
 
 def get_connection():
-    try:
-        conn_str = (
-            "DRIVER={ODBC Driver 17 for SQL Server};"
-            f"SERVER={os.getenv('DB_SERVER')};"
-            f"DATABASE={os.getenv('DB_NAME')};"
-            f"UID={os.getenv('DB_USER')};"
-            f"PWD={os.getenv('DB_PASSWORD')};"
-            "Encrypt=yes;"
-            "TrustServerCertificate=no;"
-            "Connection Timeout=30;"
-        )
-        return pyodbc.connect(conn_str)
-    except Exception as e:
-        print("Connection error:", e)
-        raise
+    return pymssql.connect(
+        server=os.getenv("DB_SERVER"),
+        user=os.getenv("DB_USER"),
+        password=os.getenv("DB_PASSWORD"),
+        database=os.getenv("DB_NAME")
+    )
 
 def init_db():
     conn = get_connection()
@@ -72,9 +63,9 @@ def analyze(data: PasswordRequest):
     cursor = conn.cursor()
 
     cursor.execute(
-        "INSERT INTO results (password, score, entropy) VALUES (?, ?, ?)",
-        data.password, result['score'], result['entropy']
-    )
+    "INSERT INTO results (password, score, entropy) VALUES (%s, %s, %s)",
+    (data.password, result['score'], result['entropy'])
+)
 
     conn.commit()
     conn.close()
