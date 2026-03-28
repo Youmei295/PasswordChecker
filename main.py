@@ -10,7 +10,7 @@ import pyodbc
 def get_connection():
     try:
         conn_str = (
-            "DRIVER={ODBC Driver 18 for SQL Server};"
+            "DRIVER={ODBC Driver 17 for SQL Server};"
             f"SERVER={os.getenv('DB_SERVER')};"
             f"DATABASE={os.getenv('DB_NAME')};"
             f"UID={os.getenv('DB_USER')};"
@@ -44,9 +44,11 @@ def init_db():
     conn.commit()
     conn.close()
 @asynccontextmanager
-
 async def lifespan(app: FastAPI):
-    init_db()
+    try:
+        init_db()
+    except Exception as e:
+        print("Init DB failed:", e)
     yield
 
 app = FastAPI(lifespan=lifespan)
