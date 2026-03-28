@@ -59,15 +59,20 @@ class PasswordRequest(BaseModel):
 def analyze(data: PasswordRequest):
     result = password_analyzer(data.password)
 
-    conn = get_connection()
-    cursor = conn.cursor()
+    try:
+        conn = get_connection()
+        cursor = conn.cursor()
 
-    cursor.execute(
-    "INSERT INTO results (password, score, entropy) VALUES (%s, %s, %s)",
-    (data.password, result['score'], result['entropy'])
-)
+        cursor.execute(
+            "INSERT INTO results (password, score, entropy) VALUES (%s, %s, %s)",
+            (data.password, result['score'], result['entropy'])
+        )
 
-    conn.commit()
-    conn.close()
+        conn.commit()
+        cursor.close()
+        conn.close()
+
+    except Exception as e:
+        print("DB insert failed:", e)
 
     return result
